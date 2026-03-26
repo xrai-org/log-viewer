@@ -24,10 +24,10 @@ function assertCannotDownloadFile(string $fileName): void
         ->assertForbidden();
 }
 
-test('can download every file by default', function () {
+test('cannot download files by default', function () {
     generateLogFiles([$fileName = 'laravel.log']);
 
-    assertCanDownloadFile($fileName);
+    assertCannotDownloadFile($fileName);
 });
 
 test('cannot download a file that\'s not found', function () {

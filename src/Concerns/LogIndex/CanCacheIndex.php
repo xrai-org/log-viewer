@@ -75,7 +75,7 @@ trait CanCacheIndex
         $data = Cache::get($this->chunkCacheKey($index), $default);
 
         if (is_string($data) && $this->canUseCompression()) {
-            $data = unserialize(gzuncompress($data));
+            $data = unserialize(gzuncompress($data), ['allowed_classes' => false]);
         }
 
         if ($data === false) {

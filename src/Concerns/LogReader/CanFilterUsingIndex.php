@@ -85,6 +85,10 @@ trait CanFilterUsingIndex
     {
         $this->closeFile();
 
+        if (! empty($query) && mb_strlen($query) > 1000) {
+            throw new \Opcodes\LogViewer\Exceptions\InvalidRegularExpression('Search query is too long.');
+        }
+
         if (! empty($query) && str_starts_with($query, 'log-index:')) {
             $this->query = null;
             $this->only(null);

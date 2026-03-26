@@ -60,6 +60,10 @@ class FoldersController
     {
         $folder = LogViewer::getFolder($folderIdentifier);
 
+        abort_if(is_null($folder), 404);
+
+        Gate::authorize('downloadLogFolder', $folder);
+
         return $folder->download();
     }
 

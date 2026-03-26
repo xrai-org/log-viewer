@@ -3,12 +3,12 @@
 use Illuminate\Support\Facades\Gate;
 use Opcodes\LogViewer\LogFile;
 
-test('can delete every file by default', function () {
+test('cannot delete files by default', function () {
     generateLogFiles([$fileName = 'laravel.log']);
 
     $this->deleteJson(route('log-viewer.files.delete', $fileName))
-        ->assertOk();
-    test()->assertFileDoesNotExist(storage_path('logs/'.$fileName));
+        ->assertForbidden();
+    test()->assertFileExists(storage_path('logs/'.$fileName));
 });
 
 test('deleting a file that\'s not found still returns a successful response', function () {

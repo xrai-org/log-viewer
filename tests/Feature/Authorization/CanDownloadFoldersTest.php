@@ -25,11 +25,11 @@ function assertCannotDownloadFolder(string $folderName): void
         ->assertForbidden();
 }
 
-test('can download every folder by default', function () {
+test('cannot download folders by default', function () {
     generateLogFiles([$fileName = 'laravel.log']);
     $folder = LogViewer::getFolder('');
 
-    assertCanDownloadFolder($folder->identifier, LogFolder::rootPrefix().'.zip');
+    assertCannotDownloadFolder($folder->identifier);
 });
 
 test('cannot download a folder that\'s not found', function () {

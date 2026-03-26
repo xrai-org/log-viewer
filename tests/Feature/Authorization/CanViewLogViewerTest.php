@@ -8,10 +8,17 @@ use Opcodes\LogViewer\LogViewerServiceProvider;
 use function Pest\Laravel\get;
 use function Pest\Laravel\getJson;
 
-test('can define an "auth" callback for authorization', function () {
-    get(route('log-viewer.index'))->assertOk();
+beforeEach(function () {
+    // Re-enable auth requirement so these tests can verify auth behavior.
+    // TestCase disables it by default for convenience.
+    config(['log-viewer.require_auth_in_production' => true]);
+});
 
-    // with the gate defined and a false value, it should not be possible to access the log viewer
+test('can define an "auth" callback for authorization', function () {
+    // blocked by default when no auth is configured
+    get(route('log-viewer.index'))->assertForbidden();
+
+    // with the callback defined and a false value, it should not be possible to access the log viewer
     LogViewer::auth(fn ($request) => false);
     get(route('log-viewer.index'))->assertForbidden();
 
@@ -31,7 +38,8 @@ test('the "auth" callback is given with a Request object to check against', func
 });
 
 test('can define a "viewLogViewer" gate as an alternative', function () {
-    get(route('log-viewer.index'))->assertOk();
+    // blocked by default when no gate is configured
+    get(route('log-viewer.index'))->assertForbidden();
 
     Gate::define('viewLogViewer', fn ($user = null) => false);
     get(route('log-viewer.index'))->assertForbidden();
@@ -40,14 +48,12 @@ test('can define a "viewLogViewer" gate as an alternative', function () {
     get(route('log-viewer.index'))->assertOk();
 });
 
-test('local environment can use Log Viewer by default', function () {
+test('Log Viewer is blocked by default in all environments when no auth is configured', function () {
     app()->detectEnvironment(fn () => 'local');
     expect(app()->isProduction())->toBeFalse();
 
-    get(route('log-viewer.index'))->assertOk();
-});
+    get(route('log-viewer.index'))->assertForbidden();
 
-test('Log Viewer is blocked in production environment by default', function () {
     app()->detectEnvironment(fn () => 'production');
     expect(app()->isProduction())->toBeTrue();
 

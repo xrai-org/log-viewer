@@ -97,17 +97,7 @@ class Utils
         if (isset($_SERVER['SERVER_ADDR'])) {
             self::$_cachedLocalIP = $_SERVER['SERVER_ADDR'];
         } else {
-            $os = php_uname('s');
-
-            if (stripos($os, 'Linux') !== false) {
-                $localIP = shell_exec("hostname -I | awk '{print $1}'"); // Linux systems
-            } elseif (stripos($os, 'Darwin') !== false) {
-                $localIP = shell_exec("ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | head -n 1"); // macOS
-            } else {
-                $localIP = gethostbyname(gethostname()); // Fallback method
-            }
-
-            self::$_cachedLocalIP = trim($localIP ?? '');
+            self::$_cachedLocalIP = gethostbyname(gethostname());
         }
 
         return self::$_cachedLocalIP;

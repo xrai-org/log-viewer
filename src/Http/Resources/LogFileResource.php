@@ -26,7 +26,7 @@ class LogFileResource extends JsonResource
             'identifier' => $this->identifier,
             'sub_folder' => $this->subFolder,
             'sub_folder_identifier' => $this->subFolderIdentifier(),
-            'path' => $this->path,
+            'path' => $this->name,
             'name' => $this->name,
             'size' => $this->size(),
             'size_in_mb' => $this->sizeInMB(),

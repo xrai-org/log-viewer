@@ -126,19 +126,19 @@ class LogViewerServiceProvider extends ServiceProvider
     protected function defineDefaultGates()
     {
         if (! Gate::has('downloadLogFile')) {
-            Gate::define('downloadLogFile', fn (mixed $user, LogFile $file) => true);
+            Gate::define('downloadLogFile', fn (mixed $user, LogFile $file) => false);
         }
 
         if (! Gate::has('downloadLogFolder')) {
-            Gate::define('downloadLogFolder', fn (mixed $user, LogFolder $folder) => true);
+            Gate::define('downloadLogFolder', fn (mixed $user, LogFolder $folder) => false);
         }
 
         if (! Gate::has('deleteLogFile')) {
-            Gate::define('deleteLogFile', fn (mixed $user, LogFile $file) => true);
+            Gate::define('deleteLogFile', fn (mixed $user, LogFile $file) => false);
         }
 
         if (! Gate::has('deleteLogFolder')) {
-            Gate::define('deleteLogFolder', fn (mixed $user, LogFolder $folder) => true);
+            Gate::define('deleteLogFolder', fn (mixed $user, LogFolder $folder) => false);
         }
     }
 
