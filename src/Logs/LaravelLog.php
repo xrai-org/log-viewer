@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Opcodes\LogViewer\Facades\LogViewer;
 use Opcodes\LogViewer\LogLevels\LaravelLogLevel;
 use Opcodes\LogViewer\Utils\Utils;
-use Opcodes\MailParser\Message;
+use Opcodes\LogViewer\MailParser\Message;
 
 class LaravelLog extends Log
 {
