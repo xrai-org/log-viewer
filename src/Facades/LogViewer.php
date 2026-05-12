@@ -21,6 +21,8 @@ use Opcodes\LogViewer\Readers\LogReaderInterface;
  * @method static HtmlString css()
  * @method static HtmlString js()
  * @method static HtmlString favicon()
+ * @method static string nonce()
+ * @method static string nonceAttribute()
  * @method static bool assetsArePublished()
  * @method static bool assetsAreCurrent()
  * @method static bool supportsHostsFeature()

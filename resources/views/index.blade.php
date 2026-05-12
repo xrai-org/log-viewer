@@ -17,7 +17,7 @@
 
     <!-- Style sheets-->
     @if ($assetsPublished)
-        <link href="{{ asset(mix('app.css', config('log-viewer.assets_path'))) }}" rel="stylesheet" onerror="alert('app.css failed to load. Please refresh the page, re-publish Log Viewer assets, or fix routing for vendor assets.')">
+        <link href="{{ asset(mix('app.css', config('log-viewer.assets_path'))) }}" rel="stylesheet">
     @else
         {!! \Opcodes\LogViewer\Facades\LogViewer::css() !!}
     @endif
@@ -29,14 +29,14 @@
 </div>
 
 <!-- Global LogViewer Object -->
-<script>
+<script{!! \Opcodes\LogViewer\Facades\LogViewer::nonceAttribute() !!}>
     window.LogViewer = @json($logViewerScriptVariables);
 
     // Add additional headers for LogViewer requests like so:
     // window.LogViewer.headers['Authorization'] = 'Bearer xxxxxxx';
 </script>
 @if ($assetsPublished)
-    <script src="{{ asset(mix('app.js', config('log-viewer.assets_path'))) }}" onerror="alert('app.js failed to load. Please refresh the page, re-publish Log Viewer assets, or fix routing for vendor assets.')"></script>
+    <script{!! \Opcodes\LogViewer\Facades\LogViewer::nonceAttribute() !!} src="{{ asset(mix('app.js', config('log-viewer.assets_path'))) }}"></script>
 @else
     {!! \Opcodes\LogViewer\Facades\LogViewer::js() !!}
 @endif

@@ -8,6 +8,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Opcodes\LogViewer\Readers\IndexedLogReader;
@@ -350,7 +351,7 @@ class LogViewerService
             throw new \RuntimeException('Unable to load the Log Viewer CSS.');
         }
 
-        return new HtmlString('<style>'.$css.'</style>');
+        return new HtmlString('<style'.$this->nonceAttribute().'>'.$css.'</style>');
     }
 
     /**
@@ -362,7 +363,33 @@ class LogViewerService
             throw new \RuntimeException('Unable to load the Log Viewer JavaScript.');
         }
 
-        return new HtmlString('<script>'.$js.'</script>');
+        return new HtmlString('<script'.$this->nonceAttribute().'>'.$js.'</script>');
+    }
+
+    /**
+     * Resolve the active CSP nonce for the current request, if one has been
+     * set via Laravel's Vite integration. Returns the empty string when no
+     * nonce is configured so the emitted tags remain compatible with apps
+     * that do not enforce CSP.
+     */
+    public function nonce(): string
+    {
+        if (! class_exists(Vite::class)) {
+            return '';
+        }
+
+        return (string) Vite::cspNonce();
+    }
+
+    /**
+     * Render the `nonce="..."` attribute snippet for inline tags, or an
+     * empty string when no nonce is configured.
+     */
+    public function nonceAttribute(): string
+    {
+        $nonce = $this->nonce();
+
+        return $nonce === '' ? '' : ' nonce="'.e($nonce).'"';
     }
 
     /**
