@@ -8,6 +8,9 @@ on:
       - '2.x'
       - '3.x'
 
+permissions:
+  contents: write
+
 jobs:
   php-code-styling:
     runs-on: ubuntu-latest

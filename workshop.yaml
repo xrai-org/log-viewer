@@ -1,0 +1,23 @@
+name: log-viewer
+base: ubuntu@26.04
+
+sdks:
+  - name: project-log-viewer
+  - name: system
+    plugs:
+      app:
+        interface: tunnel
+        endpoint: 127.0.0.1:8000
+      vite:
+        interface: tunnel
+        endpoint: 127.0.0.1:5173
+
+actions:
+  versions: /project/.workshop/log-viewer/bin/run versions
+  npm-ci: /project/.workshop/log-viewer/bin/run npm-ci "$@"
+  audit: /project/.workshop/log-viewer/bin/run audit "$@"
+  rebuild-assets: /project/.workshop/log-viewer/bin/run rebuild-assets
+  composer-update: /project/.workshop/log-viewer/bin/run composer-update "$@"
+  test: /project/.workshop/log-viewer/bin/run test "$@"
+  format: /project/.workshop/log-viewer/bin/run format "$@"
+  serve: /project/.workshop/log-viewer/bin/run serve "$@"

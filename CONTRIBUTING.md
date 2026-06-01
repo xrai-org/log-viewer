@@ -79,17 +79,17 @@ git clone https://github.com/<YOUR-USERNAME>/log-viewer.git && cd log-viewer
 
 ### 📌 Step 2
 
-Install all PHP dependencies using Composer, run the command:
+For isolated local development, launch the project Workshop instead of installing dependencies on the host:
 
 ```shell
-composer install
+workshop launch --wait-on-error
+workshop run -- npm-ci
+workshop run -- rebuild-assets
+workshop run -- test
+workshop run -- serve
 ```
 
-Once finished, proceed to install Node dependencies. Run the command:
-
-```shell
-npm install
-```
+Use `workshop shell` for an interactive prompt inside the isolated environment. The project is mounted at `/project`, while Node, npm, PHP, Composer, and installed dependencies stay inside the Workshop. `workshop run -- rebuild-assets` is the command that writes rebuilt assets back to `public/`.
 
 ### 📌 Step 3
 
@@ -105,32 +105,24 @@ Now, you can work on this newly created branch.
 
 ### 📌 Step 4
 
-If you're working on the front-end of Log Viewer, you want to run the command `npm run watch` to automatically rebuild any CSS and JavaScript files.
-
-Keep in mind that any front-end changes will need to be re-published to your Laravel application:
+If you're working on the front-end of Log Viewer, rebuild the production CSS and JavaScript bundle inside the Workshop:
 
 ```shell
-php artisan log-viewer:publish
-```
-
-The command also takes an additional parameter, `--watch` which continuously watches for new front-end changes and re-publishes them.
-
-```shell
-php artisan log-viewer:publish --watch
+workshop run -- rebuild-assets
 ```
 
 ### 📌 Step 5
 
-After you are done coding, please run Laravel Pint for code formatting:
+After you are done coding, please run Laravel Pint for code formatting inside the Workshop:
 
 ```Shell
-composer format
+workshop run -- format
 ```
 
-Finally, run the Pest PHP for tests:
+Finally, run the Pest PHP tests inside the Workshop:
 
 ```Shell
-composer test
+workshop run -- test
 ```
 
 ### 📌 Step 6
@@ -168,7 +160,7 @@ If you changed any CSS or JavaScript files, you must build the assets for produc
 Run the command:
 
 ```shell
-npm run production
+workshop run -- rebuild-assets
 ```
 
 ### 📌 Step 8

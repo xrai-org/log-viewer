@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mkdir -p "$HOME/.cache/composer" "$HOME/.npm"
+
+npm config set audit true --location=user
+npm config set fund false --location=user
+npm config set ignore-scripts true --location=user
+
+composer config --global cache-dir "$HOME/.cache/composer"
+composer config --global process-timeout 0

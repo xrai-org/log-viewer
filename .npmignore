@@ -1,0 +1,27 @@
+# Operational files
+.github/
+.workshop/
+.workshop.lock
+workshop.yaml
+workbench/
+
+# Development-only inputs
+tests/
+docs/
+art/
+.editorconfig
+.gitattributes
+.gitignore
+CONTRIBUTING.md
+phpunit.xml.dist
+psalm.xml
+psalm.xml.dist
+phpstan.neon.dist
+phpstan-baseline.neon
+testbench.yaml
+pint.json
+postcss.config.js
+tailwind.config.js
+vite.config.mjs
+webpack.mix.js
+package-lock.json

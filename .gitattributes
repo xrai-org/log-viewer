@@ -3,8 +3,14 @@
 
 # Ignore all test and documentation with "export-ignore".
 /.github            export-ignore
+/.github/**         export-ignore
+/.workshop          export-ignore
+/.workshop/**       export-ignore
 /.gitattributes     export-ignore
 /.gitignore         export-ignore
+/workshop.yaml      export-ignore
+/workbench          export-ignore
+/workbench/**       export-ignore
 /phpunit.xml.dist   export-ignore
 /art                export-ignore
 /docs               export-ignore

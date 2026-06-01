@@ -1,5 +1,6 @@
 .idea
 .DS_Store
+.workshop.lock
 .phpunit.result.cache
 .phpunit.cache
 build

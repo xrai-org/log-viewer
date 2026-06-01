@@ -31,6 +31,7 @@ test('"deleteLogFolder" gate can prevent folder deletion', function () {
 
     // now let's allow access again
     Gate::define('deleteLogFolder', fn (mixed $user, ?LogFolder $folder = null) => true);
+    Gate::define('deleteLogFile', fn (mixed $user) => true);
 
     $this->deleteJson(route('log-viewer.folders.delete', $folder->identifier))
         ->assertOk();
@@ -50,6 +51,7 @@ test('"deleteLogFolder" gate is supplied with a log folder object', function () 
 
         return true;
     });
+    Gate::define('deleteLogFile', fn (mixed $user) => true);
 
     $this->deleteJson(route('log-viewer.folders.delete', $expectedFolder->identifier))
         ->assertOk();

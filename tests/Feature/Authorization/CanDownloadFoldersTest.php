@@ -46,6 +46,7 @@ test('"downloadLogFolder" gate can prevent folder download', function () {
 
     // now let's allow access again
     Gate::define('downloadLogFolder', fn (mixed $user) => true);
+    Gate::define('downloadLogFile', fn (mixed $user) => true);
 
     assertCanDownloadFolder($folder->identifier, LogFolder::rootPrefix().'.zip');
 });
@@ -62,6 +63,7 @@ test('"downloadLogFolder" gate is supplied with a log folder object', function (
 
         return true;
     });
+    Gate::define('downloadLogFile', fn (mixed $user) => true);
 
     assertCanDownloadFolder($expectedFolder->identifier, LogFolder::rootPrefix().'.zip');
 

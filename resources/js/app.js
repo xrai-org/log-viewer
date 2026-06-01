@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import axios from 'axios';
 import { createRouter, createWebHistory } from 'vue-router';
+import '../css/app.scss';
 import App from './App.vue';
 import Home from './pages/Home.vue';
 

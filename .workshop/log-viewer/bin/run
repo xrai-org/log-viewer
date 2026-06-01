@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+project_dir="/project"
+work_dir="${LOG_VIEWER_WORKSHOP_WORK_DIR:-$HOME/.cache/log-viewer-workshop}"
+frontend_dir="$work_dir/frontend"
+php_dir="$work_dir/php"
+
+copy_project() {
+    local target_dir="$1"
+
+    rm -rf "$target_dir"
+    mkdir -p "$target_dir"
+
+    tar \
+        --exclude='./.git' \
+        --exclude='./.workshop.lock' \
+        --exclude='./node_modules' \
+        --exclude='./vendor' \
+        -C "$project_dir" \
+        -cf - . \
+        | tar -C "$target_dir" -xf -
+}
+
+copy_public_assets_back() {
+    rm -rf "$project_dir/public"
+    mkdir -p "$project_dir/public"
+    cp -a "$frontend_dir/public/." "$project_dir/public/"
+}
+
+frontend_workspace() {
+    copy_project "$frontend_dir"
+    cd "$frontend_dir"
+}
+
+php_workspace() {
+    copy_project "$php_dir"
+    cd "$php_dir"
+}
+
+install_php_dependencies() {
+    composer update --no-interaction --prefer-dist --no-progress
+}
+
+case "${1:-}" in
+    versions)
+        cd "$project_dir"
+        php -v
+        composer --version
+        node --version
+        npm --version
+        ;;
+    npm-ci)
+        shift
+        frontend_workspace
+        npm ci --ignore-scripts "$@"
+        ;;
+    audit)
+        shift
+        frontend_workspace
+        npm audit "$@"
+        ;;
+    rebuild-assets)
+        frontend_workspace
+        npm ci --ignore-scripts
+        npm run production
+        copy_public_assets_back
+        ;;
+    composer-update)
+        shift
+        php_workspace
+        composer update --no-interaction --prefer-dist --no-progress "$@"
+        ;;
+    test)
+        shift
+        php_workspace
+        install_php_dependencies
+        vendor/bin/pest --no-coverage "$@"
+        ;;
+    format)
+        shift
+        php_workspace
+        install_php_dependencies
+        vendor/bin/pint "$@"
+        ;;
+    serve)
+        shift
+        php_workspace
+        install_php_dependencies
+        if [ "$#" -eq 0 ]; then
+            set -- --host=127.0.0.1 --port=8000
+        fi
+        vendor/bin/testbench serve "$@"
+        ;;
+    *)
+        echo "Usage: workshop run -- <versions|npm-ci|audit|rebuild-assets|composer-update|test|format|serve>" >&2
+        exit 2
+        ;;
+esac
